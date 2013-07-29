@@ -24,8 +24,12 @@ function show_dw_widget($instance){
 
     if (is_home()){
         $show = isset($instance['page-home']) ? ($instance['page-home']) : false;
+        if(!$show and $post_id)
+            $show = isset($instance['page-'. $post_id]) ? ($instance['page-'. $post_id]) : false;
     }else if (is_front_page()){
         $show = isset($instance['page-front']) ? ($instance['page-front']) : false;
+        if(!$show and $post_id)
+            $show = isset($instance['page-'. $post_id]) ? ($instance['page-'. $post_id]) : false;
     }else if (is_category()){
         $show = isset($instance['cat-'. get_query_var('cat')]) ? ($instance['cat-'. get_query_var('cat')]) : false;
     }else if(is_tax()){
@@ -34,6 +38,10 @@ function show_dw_widget($instance){
         unset($term);
     }else if (is_archive()){
         $show = isset($instance['page-archive']) ? ($instance['page-archive']) : false;
+        if (!$show and function_exists('get_post_type')){
+            $type = get_post_type();
+            $show = isset($instance['type-'. $type .'-archive']) ? ($instance['type-'. $type .'-archive']) : false;
+        }
     }else if (is_single()){
         if(function_exists('get_post_type')){
             $type = get_post_type();
@@ -137,7 +145,7 @@ function dw_show_hide_widget_options($widget, $return, $instance){
         $instance['page-'. $page->ID] = isset($instance['page-'. $page->ID]) ? $instance['page-'. $page->ID] : false;   
     ?>
         <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $page->ID], true) ?> id="<?php echo $widget->get_field_id('page-'. $page->ID); ?>" name="<?php echo $widget->get_field_name('page-'. $page->ID); ?>" />
-        <label for="<?php echo $widget->get_field_id('page-'. $page->ID); ?>"><?php echo $page->post_title ?></label></p>
+        <label for="<?php echo $widget->get_field_id('page-'. $page->ID); ?>"><?php echo apply_filters('the_title', $page->post_title, $page->ID) ?></label></p>
     <?php	}  ?>
     </div>
     
@@ -149,6 +157,19 @@ function dw_show_hide_widget_options($widget, $return, $instance){
     ?>
         <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key], true) ?> id="<?php echo $widget->get_field_id('type-'. $post_key); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key); ?>" />
         <label for="<?php echo $widget->get_field_id('type-'. $post_key); ?>"><?php echo stripslashes($custom_post->labels->name) ?></label></p>
+    <?php
+            unset($post_key);
+            unset($custom_post);
+        } ?>
+    </div>
+    
+    <h4 onclick="dw_toggle(jQuery(this))" style="cursor:pointer;"><?php _e('Custom Post Type Archives', 'display-widgets') ?> +/-</h4>
+    <div class="dw_collapse">
+    <?php foreach ($dw_cposts as $post_key => $custom_post){
+        $instance['type-'. $post_key .'-archive'] = isset($instance['type-'. $post_key .'-archive']) ? $instance['type-'. $post_key .'-archive'] : false;
+    ?>
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key.'-archive'], true) ?> id="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key .'-archive'); ?>" />
+        <label for="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>"><?php echo stripslashes($custom_post->labels->name) ?> <?php _e('Archive', 'display-widgets') ?></label></p>
     <?php } ?>
     </div>
     <?php } ?>
@@ -239,6 +260,12 @@ function dw_update_widget_options($instance, $new_instance, $old_instance){
                 $instance['type-'. $post_key] = 1;
             else if(isset($instance['type-'. $post_key]))
                 unset($instance['type-'. $post_key]);
+                
+            if(isset($new_instance['type-'. $post_key .'-archive']))
+                $instance['type-'. $post_key .'-archive'] = 1;
+            else if(isset($instance['type-'. $post_key .'-archive']))
+                unset($instance['type-'. $post_key .'-archive']);
+            
             unset($custom_post);
         }
     }
@@ -264,7 +291,7 @@ function dw_update_widget_options($instance, $new_instance, $old_instance){
     }
          
     $instance['dw_include'] = $new_instance['dw_include'] ? 1 : 0;
-    $instance['dw_logout'] =  $new_instance['dw_logout'] ? 1 : 0;
+    $instance['dw_logout'] = $new_instance['dw_logout'] ? 1 : 0;
     $instance['dw_login'] = $new_instance['dw_login'] ? 1 : 0;
     $instance['other_ids'] = $new_instance['other_ids'] ? $new_instance['other_ids'] : '';
     

@@ -51,6 +51,13 @@ This is a known limitation. Widgets written in the pre-2.8 format don't work the
 1. The extra widget options added.
 
 == Changelog ==
+= 1.25 =
+* Updated translations
+* Fixed bug with unchecking the "logged in" and "logged out" boxes
+* Added the_title filter to page titles
+* Added post type archive option
+* Check if box for front page or blog page is checked
+
 = 1.24 =
 * Fixed bug preventing boxes unchecking for some users
 
