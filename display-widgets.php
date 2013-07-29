@@ -5,7 +5,7 @@ Plugin URI: http://strategy11.com/display-widgets/
 Description: Adds checkboxes to each widget to show or hide on site pages.
 Author: Strategy11
 Author URI: http://strategy11.com
-Version: 1.24
+Version: 1.25
 */
 
 load_plugin_textdomain( 'display-widgets', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -115,7 +115,7 @@ function dw_show_hide_widget_options($widget, $return, $instance){
         </select>
     </p>    
 
-<div style="height:150px; overflow:auto; border:1px solid #dfdfdf;">
+<div style="height:150px; overflow:auto; border:1px solid #dfdfdf;padding:5px;">
     <p><input class="checkbox" type="checkbox" <?php checked($instance['dw_logout'], true) ?> id="<?php echo $widget->get_field_id('dw_logout'); ?>" name="<?php echo $widget->get_field_name('dw_logout'); ?>" value="1" />
     <label for="<?php echo $widget->get_field_id('dw_logout'); ?>"><?php _e('Show only for Logged-out users', 'display-widgets') ?></label></p>
     <p><input class="checkbox" type="checkbox" <?php checked($instance['dw_login'], true) ?> id="<?php echo $widget->get_field_id('dw_login'); ?>" name="<?php echo $widget->get_field_name('dw_login'); ?>" value="1" />
@@ -264,10 +264,8 @@ function dw_update_widget_options($instance, $new_instance, $old_instance){
     }
          
     $instance['dw_include'] = $new_instance['dw_include'] ? 1 : 0;
-    if(isset($new_instance['dw_logout']))
-        $instance['dw_logout'] =  $new_instance['dw_logout'];
-    if(isset($new_instance['dw_login']))
-        $instance['dw_login'] = $new_instance['dw_login'];
+    $instance['dw_logout'] =  $new_instance['dw_logout'] ? 1 : 0;
+    $instance['dw_login'] = $new_instance['dw_login'] ? 1 : 0;
     $instance['other_ids'] = $new_instance['other_ids'] ? $new_instance['other_ids'] : '';
     
     foreach(array('front', 'home', 'archive', 'single', '404', 'search') as $page){
