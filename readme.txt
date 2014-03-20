@@ -14,7 +14,7 @@ Change your sidebar content for different pages, categories, custom taxonomies, 
 
 By default, 'Hide on checked pages' is selected with no boxes checked, so all current widgets will continue to display on all pages. 
 
-You can also find a development version where you can add translations and bug fixes on ([GitHub](https://github.com/stephywells/display-widgets "GitHub"))
+You can also find a development version where you can add translations and bug fixes on ([GitHub](https://github.com/Strategy11/display-widgets "GitHub"))
 
 http://strategy11.com/display-widgets/
 
@@ -61,6 +61,10 @@ function dw_callback_trigger(){
 1. The extra widget options added.
 
 == Changelog ==
+= 2.04 =
+* Check if user is logged in before any other checks
+* Resume use of old hook for those with widgets showing that shouldn't
+
 = 2.03 =
 * Default to check for widgets on wp_loaded hook
 * Added dw_callback_trigger hook to change timing of first widget sidebar check

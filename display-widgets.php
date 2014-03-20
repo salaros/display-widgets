@@ -5,7 +5,7 @@ Plugin URI: http://strategy11.com/display-widgets/
 Description: Adds checkboxes to each widget to show or hide on site pages.
 Author: Strategy11
 Author URI: http://strategy11.com
-Version: 2.03
+Version: 2.04b
 */
 
 /*
@@ -42,12 +42,12 @@ class DWPlugin{
     var $langs = array();
     
     function __construct(){
-        //add_filter('widget_display_callback', array(&$this, 'show_widget'));
+        add_filter('widget_display_callback', array(&$this, 'show_widget'));
         
         // change the hook that triggers widget check
         $hook = apply_filters('dw_callback_trigger', 'wp_loaded');
         
-        add_filter($hook, array(&$this, 'trigger_widget_checks'));
+        add_action($hook, array(&$this, 'trigger_widget_checks'));
         add_action('in_widget_form', array(&$this, 'hidden_widget_options'), 10, 3);
         add_filter('widget_update_callback', array(&$this, 'update_widget_options'), 10, 3);
         add_action('wp_ajax_dw_show_widget', array(&$this, 'show_widget_options'));
@@ -73,6 +73,17 @@ class DWPlugin{
     }
 
     function show_widget($instance) {
+        $instance['dw_logged'] = self::show_logged($instance);
+        
+        // check logged in first
+        if ( in_array($instance['dw_logged'], array('in', 'out') ) ) {
+            $user_ID = is_user_logged_in();
+            if ( ( 'out' == $instance['dw_logged'] && $user_ID ) ||
+                ( 'in' == $instance['dw_logged'] && !$user_ID ) ) {
+                return false;
+            }
+        }
+        
         $post_id = get_queried_object_id();
         $post_id = self::get_lang_id($post_id, 'page');
 
@@ -154,17 +165,9 @@ class DWPlugin{
         }
 
         $instance['dw_include'] = isset($instance['dw_include']) ? $instance['dw_include'] : 0;
-        $instance['dw_logged'] = self::show_logged($instance);
         
         if ( ( $instance['dw_include'] && false == $show ) || ( 0 == $instance['dw_include'] && $show ) ) {
             return false;
-        } else {
-            $user_ID = is_user_logged_in();
-            if ( ( 'out' == $instance['dw_logged'] && $user_ID ) ||
-                ( 'in' == $instance['dw_logged'] && !$user_ID ) ) {
-                return false;
-            }
-
         }
         
 	    return $instance;
