@@ -66,6 +66,9 @@ class DWPlugin{
         register_activation_hook(dirname(__FILE__) .'/display-widgets.php', array(&$this, 'delete_transient'));
         
         add_action('plugins_loaded', array(&$this, 'load_lang'));
+
+        // get custom Page Walker
+        $this->page_list = new Walker_Page_List();
     }
     
     function trigger_widget_checks() {
@@ -325,26 +328,17 @@ class DWPlugin{
     
     <h4 class="dw_toggle" style="cursor:pointer;"><?php _e('Pages') ?> +/-</h4>
     <div class="dw_collapse">
-    <?php foreach ( $this->pages as $page ) { 
+    <?php 
+      foreach ( $this->pages as $page ) { 
         $instance['page-'. $page->ID] = isset($instance['page-'. $page->ID]) ? $instance['page-'. $page->ID] : false;
-        $p_title = apply_filters('the_title', $page->post_title, $page->ID);
-        if ( $page->post_parent ) {
-            $parent = get_post($page->post_parent);
-            $p_title .= ' ('. apply_filters('the_title', $parent->post_title, $parent->ID);
-            if ( $parent->post_parent ) {
-                $grandparent = get_post($parent->post_parent);
-                $p_title .= ' - '. apply_filters('the_title', $grandparent->post_title, $grandparent->ID);
-                unset($grandparent);
-            }
-            $p_title .= ')';
-            unset($parent);
-        }
+      } 
 
+      // use custom Page Walker to build page list
+      $args = array( 'instance' => $instance, 'widget' => $widget );
+      $page_list = $this->page_list->walk( $this->pages, 0, $args );
+      if( $page_list )
+        echo '<ul>' . $page_list . '</ul>';
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $page->ID], true) ?> id="<?php echo $widget->get_field_id('page-'. $page->ID); ?>" name="<?php echo $widget->get_field_name('page-'. $page->ID); ?>" />
-        <label for="<?php echo $widget->get_field_id('page-'. $page->ID); ?>"><?php echo $p_title ?></label></p>
-    <?php   unset($p_title);	
-        }  ?>
     </div>
     
     <?php if ( !empty($this->cposts) ) { ?>
@@ -672,3 +666,58 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
     }
 
 }
+
+/*
+custom Page Walker class
+*/
+class Walker_Page_List extends Walker_Page {
+
+  function start_lvl( &$output, $depth = 0, $args = array() ) {
+    $output .= "\n<ul class='children'>\n";
+  }
+
+  function end_lvl( &$output, $depth = 0, $args = array() ) {
+    $output .= "</ul>\n";
+  }
+
+  function start_el( &$output, $page, $depth = 0, $args = array(), $current_page = 0 ) {
+    if ( $depth )
+      $indent = str_repeat("&mdash; ", $depth);
+    else
+      $indent = '';
+
+    // args: $instance, $widget
+    extract($args, EXTR_SKIP);
+    
+
+    if ( '' === $page->post_title )
+      $page->post_title = sprintf( __( '#%d (no title)' ), $page->ID );
+
+    $output .= '<li>' . $indent . '<input class="checkbox" type="checkbox" ' 
+        . checked($instance['page-'. $page->ID], true, false) 
+        . ' id="' . $widget->get_field_id('page-'. $page->ID) 
+        .'" name="' . $widget->get_field_name('page-'. $page->ID) .'" />';
+    
+
+    $output .= '<label for="' . $widget->get_field_id('page-'. $page->ID) . '">' 
+        . apply_filters( 'the_title', $page->post_title, $page->ID ) 
+        . '</label>';
+  }
+
+  function end_el( &$output, $page, $depth = 0, $args = array() ) {
+    $output .= "</li>\n";
+  }
+
+}
+
+/*
+custom Page Walker CSS
+*/
+function dw_widgets_style() {
+  echo '<style>';
+  // use next line for normal indent instead of &mdash:
+  // echo '.dw_collapse ul ul { padding-left: 1.5em; }';
+  echo '.dw_collapse li { line-height: 1.5em; margin: 1em 0; }';
+  echo '</style>';
+}
+add_action( 'admin_print_styles-widgets.php', 'dw_widgets_style' );
