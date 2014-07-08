@@ -325,7 +325,7 @@ class DWPlugin{
         $instance['page-'. $key] = isset($instance['page-'. $key]) ? $instance['page-'. $key] : false;
     ?>
         <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $key], true) ?> id="<?php echo $widget->get_field_id('page-'. $key); ?>" name="<?php echo $widget->get_field_name('page-'. $key); ?>" />
-        <label for="<?php echo $widget->get_field_id('page-'. $key); ?>"><?php echo $label .' '. __('Page', 'display-widgets') ?></label></p>
+        <label for="<?php echo $widget->get_field_id('page-'. $key); ?>"><?php echo $label; ?></label></p>
     <?php } ?>
     </div>
     
