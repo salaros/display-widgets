@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Widgets v2.0\n"
+"Project-Id-Version: Display Widgets v2.04b\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2014-01-14 00:16:11+0000\n"
+"PO-Revision-Date: 2014-07-08 07:59:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,108 +20,109 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: display-widgets.php:558
+#: display-widgets.php:577
 #@ display-widgets
 msgid "Front"
-msgstr "Front-"
+msgstr "Front"
 
-#: display-widgets.php:559
+#: display-widgets.php:578
 #@ display-widgets
 msgid "Blog"
-msgstr "Blog-"
+msgstr "Blog"
 
-#: display-widgets.php:560
+#: display-widgets.php:579
 #@ default
 msgid "Archives"
-msgstr "Archiv-"
+msgstr ""
 
-#: display-widgets.php:561
+#: display-widgets.php:580
 #@ default
 msgid "Single Post"
-msgstr "Einzelne Beitrags-"
+msgstr ""
 
-#: display-widgets.php:563
+#: display-widgets.php:582
 #@ default
 msgid "Search"
-msgstr "Suchergebnis-"
+msgstr ""
 
-#: display-widgets.php:303
+#: display-widgets.php:332
 #@ default
 msgid "Pages"
-msgstr "Seiten"
+msgstr ""
 
-#: display-widgets.php:356
+#: display-widgets.php:376
 #@ default
 msgid "Categories"
-msgstr "Kategorien"
+msgstr ""
 
-#: display-widgets.php:293
+#: display-widgets.php:322
 #@ display-widgets
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: display-widgets.php:299
-#@ display-widgets
-msgid "Page"
-msgstr "Seite"
-
-#: display-widgets.php:402
+#: display-widgets.php:422
 #@ display-widgets
 msgid "Comma Separated list of IDs of posts not listed above"
-msgstr "Kommagetrennte Liste mit IDs von Einträgen, die hier nicht gelistet wurden"
+msgstr "Kommagetrennte Liste mit IDs von Einträgen, die hier nicht gelistet werden"
 
-#: display-widgets.php:328
+#: display-widgets.php:348
 #@ display-widgets
 msgid "Custom Post Types"
 msgstr "Inhaltstypen (Custom Post Types)"
 
-#: display-widgets.php:370
+#: display-widgets.php:390
 #@ display-widgets
 msgid "Taxonomies"
 msgstr "Taxonomien"
 
-#: display-widgets.php:385
+#: display-widgets.php:405
 #@ display-widgets
 msgid "Languages"
 msgstr "Sprachen"
 
-#: display-widgets.php:277
+#: display-widgets.php:306
 #@ display-widgets
 msgid "Show Widget for:"
-msgstr ""
+msgstr "Zeige Widget für:"
 
-#: display-widgets.php:279
+#: display-widgets.php:308
 #@ display-widgets
 msgid "Everyone"
-msgstr ""
+msgstr "Alle Besucher/innen"
 
-#: display-widgets.php:280
+#: display-widgets.php:309
 #@ display-widgets
 msgid "Logged-out users"
-msgstr ""
+msgstr "Abgemeldete Benutzer/innen"
 
-#: display-widgets.php:281
+#: display-widgets.php:310
 #@ display-widgets
 msgid "Logged-in users"
-msgstr ""
+msgstr "Angemeldete Benutzer/innen"
 
-#: display-widgets.php:287
+#: display-widgets.php:316
 #@ display-widgets
 msgid "Hide on checked pages"
-msgstr ""
+msgstr "Nicht anzeigen auf ausgewählten Seiten"
 
-#: display-widgets.php:288
+#: display-widgets.php:317
 #@ display-widgets
 msgid "Show on checked pages"
-msgstr ""
+msgstr "Anzeigen auf ausgewählten Seiten"
 
-#: display-widgets.php:341
+#: display-widgets.php:361
 #@ display-widgets
 msgid "Custom Post Type Archives"
-msgstr ""
+msgstr "Archive von Inhaltstypen (Custom Post Types)"
 
-#: display-widgets.php:351
+#: display-widgets.php:371
 #@ display-widgets
 msgid "Archive"
+msgstr "Archiv"
+
+#: display-widgets.php:697
+#, php-format
+#@ default
+msgid "#%d (no title)"
 msgstr ""
 
