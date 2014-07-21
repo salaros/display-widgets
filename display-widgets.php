@@ -17,9 +17,6 @@ function dw_callback_trigger(){
 */
 
 
-global $dw_plugin;
-$dw_plugin = new DWPlugin();
-
 class DWPlugin{
     var $transient_name = 'dw_details';
     var $checked = array();
@@ -68,7 +65,7 @@ class DWPlugin{
         add_action('plugins_loaded', array(&$this, 'load_lang'));
 
         // get custom Page Walker
-        $this->page_list = new Walker_Page_List();
+        $this->page_list = new DW_Walker_Page_List();
     }
     
     function trigger_widget_checks() {
@@ -673,7 +670,7 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
 /*
 custom Page Walker class
 */
-class Walker_Page_List extends Walker_Page {
+class DW_Walker_Page_List extends Walker_Page {
 
   function start_lvl( &$output, $depth = 0, $args = array() ) {
     $output .= "\n<ul class='children'>\n";
@@ -712,6 +709,9 @@ class Walker_Page_List extends Walker_Page {
   }
 
 }
+
+$dw_plugin = new DWPlugin();
+unset($dw_plugin);
 
 /*
 custom Page Walker CSS
