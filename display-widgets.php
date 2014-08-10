@@ -372,6 +372,8 @@ class DWPlugin{
     
     <h4 class="dw_toggle" style="cursor:pointer;"><?php _e('Categories') ?> +/-</h4>
     <div class="dw_collapse">
+        <p><input class="checkbox" type="checkbox" id="cat-all" name="cat-all" />
+        <label for="cat-all">All Categories</label></p>
     <?php foreach ( $this->cats as $cat ) {
         $instance['cat-'. $cat->cat_ID] = isset($instance['cat-'. $cat->cat_ID]) ? $instance['cat-'. $cat->cat_ID] : false;   
     ?>
