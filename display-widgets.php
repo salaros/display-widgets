@@ -103,7 +103,11 @@ class DWPlugin{
                 $show = isset($instance['page-'. $post_id]) ? $instance['page-'. $post_id] : false;
             }
         } else if ( is_category() ) {
-            $show = isset($instance['cat-'. get_query_var('cat')]) ? $instance['cat-'. get_query_var('cat')] : false;
+            $show = isset($instance['cat-all']) ? $instance['cat-all'] : false;
+
+            if ( !$show ) {
+                $show = isset($instance['cat-'. get_query_var('cat')]) ? $instance['cat-'. get_query_var('cat')] : false;
+            }
         } else if ( is_tax() ) {
             $term = get_queried_object();
             $show = isset($instance['tax-'. $term->taxonomy]) ? $instance['tax-'. $term->taxonomy] : false;
@@ -169,7 +173,7 @@ class DWPlugin{
         if ( ( $instance['dw_include'] && false == $show ) || ( 0 == $instance['dw_include'] && $show ) ) {
             return false;
         //if the widget has to be visible here, but the current language has not been checked, return false
-        }elseif($instance['dw_include'] && $show && !isset($instance['lang-'. ICL_LANGUAGE_CODE])){
+        }elseif(defined('ICL_LANGUAGE_CODE') && $instance['dw_include'] && $show && !isset($instance['lang-'. ICL_LANGUAGE_CODE])){
 		return false;
 	}
         
@@ -321,7 +325,7 @@ class DWPlugin{
     <?php foreach ($wp_page_types as $key => $label){ 
         $instance['page-'. $key] = isset($instance['page-'. $key]) ? $instance['page-'. $key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $key], true) ?> id="<?php echo $widget->get_field_id('page-'. $key); ?>" name="<?php echo $widget->get_field_name('page-'. $key); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $key], true); ?> id="<?php echo $widget->get_field_id('page-'. $key); ?>" name="<?php echo $widget->get_field_name('page-'. $key); ?>" />
         <label for="<?php echo $widget->get_field_id('page-'. $key); ?>"><?php echo $label; ?></label></p>
     <?php } ?>
     </div>
@@ -347,7 +351,7 @@ class DWPlugin{
     <?php foreach ( $this->cposts as $post_key => $custom_post ) { 
         $instance['type-'. $post_key] = isset($instance['type-'. $post_key]) ? $instance['type-'. $post_key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key], true) ?> id="<?php echo $widget->get_field_id('type-'. $post_key); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key], true); ?> id="<?php echo $widget->get_field_id('type-'. $post_key); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key); ?>" />
         <label for="<?php echo $widget->get_field_id('type-'. $post_key); ?>"><?php echo stripslashes($custom_post->labels->name) ?></label></p>
     <?php
             unset($post_key);
@@ -364,7 +368,7 @@ class DWPlugin{
         }
         $instance['type-'. $post_key .'-archive'] = isset($instance['type-'. $post_key .'-archive']) ? $instance['type-'. $post_key .'-archive'] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key.'-archive'], true) ?> id="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key .'-archive'); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key.'-archive'], true); ?> id="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key .'-archive'); ?>" />
         <label for="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>"><?php echo stripslashes($custom_post->labels->name) ?> <?php _e('Archive', 'display-widgets') ?></label></p>
     <?php } ?>
     </div>
@@ -372,16 +376,17 @@ class DWPlugin{
     
     <h4 class="dw_toggle" style="cursor:pointer;"><?php _e('Categories') ?> +/-</h4>
     <div class="dw_collapse">
-        <p><input class="checkbox" type="checkbox" id="cat-all" name="cat-all" />
-        <label for="cat-all">All Categories</label></p>
+        <?php $instance['cat-all'] = isset($instance['cat-all']) ? $instance['cat-all'] : false; ?>
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-all'], true); ?> id="<?php echo $widget->get_field_id('cat-all'); ?>" name="<?php echo $widget->get_field_name('cat-all'); ?>" />
+        <label for="<?php echo $widget->get_field_id('cat-all'); ?>">All Categories</label></p>
     <?php foreach ( $this->cats as $cat ) {
-        $instance['cat-'. $cat->cat_ID] = isset($instance['cat-'. $cat->cat_ID]) ? $instance['cat-'. $cat->cat_ID] : false;   
+        $instance['cat-'. $cat->cat_ID] = isset($instance['cat-'. $cat->cat_ID]) ? $instance['cat-'. $cat->cat_ID] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-'. $cat->cat_ID], true) ?> id="<?php echo $widget->get_field_id('cat-'. $cat->cat_ID); ?>" name="<?php echo $widget->get_field_name('cat-'. $cat->cat_ID); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-'. $cat->cat_ID], true); ?> id="<?php echo $widget->get_field_id('cat-'. $cat->cat_ID); ?>" name="<?php echo $widget->get_field_name('cat-'. $cat->cat_ID); ?>" />
         <label for="<?php echo $widget->get_field_id('cat-'. $cat->cat_ID); ?>"><?php echo $cat->cat_name ?></label></p>
     <?php
         unset($cat);
-        } 
+        }
     ?>
     </div>
     
@@ -391,7 +396,7 @@ class DWPlugin{
     <?php foreach ( $this->taxes as $tax ) { 
         $instance['tax-'. $tax] = isset($instance['tax-'. $tax]) ? $instance['tax-'. $tax] : false;   
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['tax-'. $tax], true) ?> id="<?php echo $widget->get_field_id('tax-'. $tax); ?>" name="<?php echo $widget->get_field_name('tax-'. $tax); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['tax-'. $tax], true); ?> id="<?php echo $widget->get_field_id('tax-'. $tax); ?>" name="<?php echo $widget->get_field_name('tax-'. $tax); ?>" />
         <label for="<?php echo $widget->get_field_id('tax-'. $tax); ?>"><?php echo str_replace(array('_','-'), ' ', ucfirst($tax)) ?></label></p>
     <?php
         unset($tax);
@@ -407,7 +412,7 @@ class DWPlugin{
 		$key = $lang['language_code'];
      	$instance['lang-'. $key] = isset($instance['lang-'. $key]) ? $instance['lang-'. $key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['lang-'. $key], true) ?> id="<?php echo $widget->get_field_id('lang-'. $key); ?>" name="<?php echo $widget->get_field_name('lang-'. $key); ?>" />
+        <p><input class="checkbox" type="checkbox" <?php checked($instance['lang-'. $key], true); ?> id="<?php echo $widget->get_field_id('lang-'. $key); ?>" name="<?php echo $widget->get_field_name('lang-'. $key); ?>" />
         <label for="<?php echo $widget->get_field_id('lang-'. $key); ?>"><?php echo $lang['native_name'] ?></label></p>
        
     <?php 
@@ -439,13 +444,25 @@ class DWPlugin{
             }
         }
 
-        foreach ( $this->cats as $cat ) {
-            if ( isset($new_instance['cat-'. $cat->cat_ID]) ) {
-                $instance['cat-'. $cat->cat_ID] = 1;
-            } else if ( isset($instance['cat-'. $cat->cat_ID]) ){
-                unset($instance['cat-'. $cat->cat_ID]);
+        if ( isset($new_instance['cat-all']) ) {
+            $instance['cat-all'] = 1;
+
+            foreach ( $this->cats as $cat ) {
+                if ( isset($new_instance['cat-'. $cat->cat_ID]) ) {
+                    unset($instance['cat-'. $cat->cat_ID]);
+                }
             }
-            unset($cat);
+        } else {
+            unset($instance['cat-all']);
+
+            foreach ( $this->cats as $cat ) {
+                if ( isset($new_instance['cat-'. $cat->cat_ID]) ) {
+                    $instance['cat-'. $cat->cat_ID] = 1;
+                } else if ( isset($instance['cat-'. $cat->cat_ID]) ){
+                    unset($instance['cat-'. $cat->cat_ID]);
+                }
+                unset($cat);
+            }
         }
 
         if ( !empty($this->cposts) ) {
