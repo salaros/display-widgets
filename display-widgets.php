@@ -378,7 +378,7 @@ class DWPlugin{
     <div class="dw_collapse">
         <?php $instance['cat-all'] = isset($instance['cat-all']) ? $instance['cat-all'] : false; ?>
         <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-all'], true); ?> id="<?php echo $widget->get_field_id('cat-all'); ?>" name="<?php echo $widget->get_field_name('cat-all'); ?>" />
-        <label for="<?php echo $widget->get_field_id('cat-all'); ?>">All Categories</label></p>
+        <label for="<?php echo $widget->get_field_id('cat-all'); ?>"><?php _e( 'All Categories', 'display-widgets'); ?></label></p>
     <?php foreach ( $this->cats as $cat ) {
         $instance['cat-'. $cat->cat_ID] = isset($instance['cat-'. $cat->cat_ID]) ? $instance['cat-'. $cat->cat_ID] : false;
     ?>
