@@ -638,13 +638,17 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
                 'public' => true,
             ), 'object');
             
-            foreach ( array( 'revision', 'post', 'page', 'attachment', 'nav_menu_item' ) as $unset ) {
+            foreach ( array( 'revision', 'attachment', 'nav_menu_item' ) as $unset ) {
                 unset($this->cposts[$unset]);
             }
             
             foreach ( $this->cposts as $c => $type ) {
                 $post_taxes = get_object_taxonomies($c);
                 foreach ( $post_taxes as $post_tax) {
+                    if ( in_array($post_tax, array('category', 'post_format') ) ) {
+                        continue;
+                    }
+                    
                     $this->taxes[] = $post_tax;
                 }
             }
