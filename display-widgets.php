@@ -159,6 +159,8 @@ class DWPlugin{
             }
         }
 
+	$show = apply_filters('dw_instance_visibility', $show, $instance);
+	
         if ( !$show && defined('ICL_LANGUAGE_CODE') ) {
             // check for WPML widgets
             $show = isset($instance['lang-'. ICL_LANGUAGE_CODE]) ? $instance['lang-'. ICL_LANGUAGE_CODE] : false;
@@ -598,7 +600,7 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
             'search'    => __('Search'),
         );
         
-        return $page_types;
+        return apply_filters('dw_pages_types_register', $page_types);
     }
 
     function register_globals(){
