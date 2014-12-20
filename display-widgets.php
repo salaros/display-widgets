@@ -395,11 +395,11 @@ class DWPlugin{
     <?php if ( !empty($this->taxes) ) { ?>
     <h4 class="dw_toggle" style="cursor:pointer;"><?php _e('Taxonomies', 'display-widgets') ?> +/-</h4>
     <div class="dw_collapse">
-    <?php foreach ( $this->taxes as $tax ) { 
+    <?php foreach ( $this->taxes as $tax => $taxname) { 
         $instance['tax-'. $tax] = isset($instance['tax-'. $tax]) ? $instance['tax-'. $tax] : false;   
     ?>
         <p><input class="checkbox" type="checkbox" <?php checked($instance['tax-'. $tax], true); ?> id="<?php echo $widget->get_field_id('tax-'. $tax); ?>" name="<?php echo $widget->get_field_name('tax-'. $tax); ?>" />
-        <label for="<?php echo $widget->get_field_id('tax-'. $tax); ?>"><?php echo str_replace(array('_','-'), ' ', ucfirst($tax)) ?></label></p>
+        <label for="<?php echo $widget->get_field_id('tax-'. $tax); ?>"><?php echo str_replace(array('_','-'), ' ', ucfirst($taxname)) ?></label></p>
     <?php
         unset($tax);
         } 
@@ -486,7 +486,7 @@ class DWPlugin{
         }
 
         if ( !empty($this->taxes) ) {
-            foreach ( $this->taxes as $tax ) {
+            foreach ( $this->taxes as $tax => $taxname ) {
                 if ( isset($new_instance['tax-'. $tax]) ) {
                     $instance['tax-'. $tax] = 1;
                 } else if ( isset($instance['tax-'. $tax]) ) {
@@ -651,7 +651,14 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
                         continue;
                     }
                     
-                    $this->taxes[] = $post_tax;
+                    $taxonomy = get_taxonomy($post_tax);
+                    $name = $post_tax;
+
+                    if (isset($taxonomy->labels->name) && !empty($taxonomy->labels->name)) {
+                      $name = $taxonomy->labels->name;
+                    }
+                    
+                    $this->taxes[$post_tax] = $name;
                 }
             }
         }
