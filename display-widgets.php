@@ -174,10 +174,10 @@ class DWPlugin{
         
         if ( ( $instance['dw_include'] && false == $show ) || ( 0 == $instance['dw_include'] && $show ) ) {
             return false;
-        //if the widget has to be visible here, but the current language has not been checked, return false
-        }elseif(defined('ICL_LANGUAGE_CODE') && $instance['dw_include'] && $show && !isset($instance['lang-'. ICL_LANGUAGE_CODE])){
-		return false;
-	}
+		} else if ( defined('ICL_LANGUAGE_CODE') && $instance['dw_include'] && $show && ! isset( $instance['lang-'. ICL_LANGUAGE_CODE ] ) ) {
+			//if the widget has to be visible here, but the current language has not been checked, return false
+			return false;
+		}
         
 	    return $instance;
     }
@@ -259,8 +259,8 @@ class DWPlugin{
         $instance['other_ids'] = isset($instance['other_ids']) ? $instance['other_ids'] : '';
 ?>
 <div class="dw_opts">
-    <input type="hidden" name="<?php echo $widget->get_field_name('dw_include'); ?>" id="<?php echo $widget->get_field_id('dw_include'); ?>" value="<?php echo $instance['dw_include'] ?>" />  
-    <input type="hidden" id="<?php echo $widget->get_field_id('dw_logged'); ?>" name="<?php echo $widget->get_field_name('dw_logged'); ?>" value="<?php echo $instance['dw_logged'] ?>" />
+	<input type="hidden" name="<?php echo esc_attr( $widget->get_field_name('dw_include') ); ?>" id="<?php echo esc_attr( $widget->get_field_id('dw_include') ); ?>" value="<?php echo esc_attr( $instance['dw_include'] ) ?>" />
+	<input type="hidden" id="<?php echo esc_attr( $widget->get_field_id('dw_logged') ); ?>" name="<?php echo esc_attr( $widget->get_field_name('dw_logged') ); ?>" value="<?php echo esc_attr( $instance['dw_logged'] ) ?>" />
     
     <?php foreach ( $instance as $k => $v ) {
             if ( !$v ) {
@@ -270,30 +270,30 @@ class DWPlugin{
             if ( strpos($k, 'page-') === 0 || strpos($k, 'type-') === 0 || strpos($k, 'cat-') === 0 || 
                 strpos($k, 'tax-') === 0 || strpos($k, 'lang-') === 0) { 
     ?>
-    <input type="hidden" id="<?php echo $widget->get_field_id($k); ?>" name="<?php echo $widget->get_field_name($k); ?>" value="<?php echo $v ?>"  />
+	<input type="hidden" id="<?php echo esc_attr( $widget->get_field_id( $k ) ); ?>" name="<?php echo esc_attr( $widget->get_field_name( $k ) ); ?>" value="<?php echo esc_attr( $v ) ?>"  />
     <?php   } ?>
     <?php } ?>    
     
-    <input type="hidden" name="<?php echo $widget->get_field_name('other_ids'); ?>" id="<?php echo $widget->get_field_id('other_ids'); ?>" value="<?php echo esc_attr($instance['other_ids']) ?>" />
+	<input type="hidden" name="<?php echo esc_attr( $widget->get_field_name('other_ids') ); ?>" id="<?php echo esc_attr( $widget->get_field_id('other_ids') ); ?>" value="<?php echo esc_attr( $instance['other_ids'] ) ?>" />
 </div>
 <?php
     }
     
     function show_widget_options() {
-        $instance = htmlspecialchars_decode(nl2br(stripslashes($_POST['opts'])));
+		$instance = htmlspecialchars_decode( nl2br( stripslashes( $_POST['opts'] ) ) );
         $instance = json_decode($instance, true);
-        $this->id_base = $_POST['id_base'];
-        $this->number = $_POST['widget_number'];
+		$this->id_base = sanitize_text_field( $_POST['id_base'] );
+		$this->number = sanitize_text_field( $_POST['widget_number'] );
         
         $new_instance = array();
         $prefix = 'widget-'. $this->id_base .'['. $this->number .'][';
         foreach ( $instance as $k => $v ) {
-            $n = str_replace( array( $prefix, ']'), '', $v['name']);
-            $new_instance[$n] = $v['value'];
+            $n = str_replace( array( $prefix, ']'), '', $v['name'] );
+            $new_instance[ $n ] = $v['value'];
         }
 
         self::show_hide_widget_options($this, '', $new_instance);
-        die();
+        wp_die();
     }
 
     function show_hide_widget_options($widget, $return, $instance) {
@@ -306,8 +306,8 @@ class DWPlugin{
         $instance['other_ids'] = isset($instance['other_ids']) ? $instance['other_ids'] : '';
 ?>   
     <p>
-        <label for="<?php echo $widget->get_field_id('dw_include'); ?>"><?php _e('Show Widget for:', 'display-widgets') ?></label>
-        <select name="<?php echo $widget->get_field_name('dw_logged'); ?>" id="<?php echo $widget->get_field_id('dw_logged'); ?>" class="widefat">
+        <label for="<?php echo esc_attr( $widget->get_field_id('dw_include') ); ?>"><?php _e('Show Widget for:', 'display-widgets') ?></label>
+        <select name="<?php echo esc_attr( $widget->get_field_name('dw_logged') ); ?>" id="<?php echo esc_attr( $widget->get_field_id('dw_logged') ); ?>" class="widefat">
             <option value=""><?php _e('Everyone', 'display-widgets') ?></option>
             <option value="out" <?php echo selected( $instance['dw_logged'], 'out' ) ?>><?php _e('Logged-out users', 'display-widgets') ?></option>
             <option value="in" <?php echo selected( $instance['dw_logged'], 'in' ) ?>><?php _e('Logged-in users', 'display-widgets') ?></option>
@@ -315,7 +315,7 @@ class DWPlugin{
     </p>
 
      <p>
-    	<select name="<?php echo $widget->get_field_name('dw_include'); ?>" id="<?php echo $widget->get_field_id('dw_include'); ?>" class="widefat">
+    	<select name="<?php echo esc_attr( $widget->get_field_name('dw_include') ); ?>" id="<?php echo esc_attr( $widget->get_field_id('dw_include') ); ?>" class="widefat">
             <option value="0"><?php _e('Hide on checked pages', 'display-widgets') ?></option> 
             <option value="1" <?php echo selected( $instance['dw_include'], 1 ) ?>><?php _e('Show on checked pages', 'display-widgets') ?></option>
         </select>
@@ -327,8 +327,8 @@ class DWPlugin{
     <?php foreach ($wp_page_types as $key => $label){ 
         $instance['page-'. $key] = isset($instance['page-'. $key]) ? $instance['page-'. $key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['page-'. $key], true); ?> id="<?php echo $widget->get_field_id('page-'. $key); ?>" name="<?php echo $widget->get_field_name('page-'. $key); ?>" />
-        <label for="<?php echo $widget->get_field_id('page-'. $key); ?>"><?php echo $label; ?></label></p>
+		<p><input class="checkbox" type="checkbox" <?php checked( $instance[ 'page-' . $key ], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('page-'. $key) ); ?>" name="<?php echo esc_attr( $widget->get_field_name('page-'. $key) ); ?>" />
+        <label for="<?php echo esc_attr( $widget->get_field_id('page-'. $key) ); ?>"><?php echo $label; ?></label></p>
     <?php } ?>
     </div>
     
@@ -353,8 +353,8 @@ class DWPlugin{
     <?php foreach ( $this->cposts as $post_key => $custom_post ) { 
         $instance['type-'. $post_key] = isset($instance['type-'. $post_key]) ? $instance['type-'. $post_key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key], true); ?> id="<?php echo $widget->get_field_id('type-'. $post_key); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key); ?>" />
-        <label for="<?php echo $widget->get_field_id('type-'. $post_key); ?>"><?php echo stripslashes($custom_post->labels->name) ?></label></p>
+		<p><input class="checkbox" type="checkbox" <?php checked( $instance['type-'. $post_key], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('type-'. $post_key) ); ?>" name="<?php echo esc_attr( $widget->get_field_name('type-'. $post_key) ); ?>" />
+		<label for="<?php echo esc_attr( $widget->get_field_id('type-'. $post_key) ); ?>"><?php echo stripslashes($custom_post->labels->name) ?></label></p>
     <?php
             unset($post_key);
             unset($custom_post);
@@ -370,8 +370,8 @@ class DWPlugin{
         }
         $instance['type-'. $post_key .'-archive'] = isset($instance['type-'. $post_key .'-archive']) ? $instance['type-'. $post_key .'-archive'] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key.'-archive'], true); ?> id="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>" name="<?php echo $widget->get_field_name('type-'. $post_key .'-archive'); ?>" />
-        <label for="<?php echo $widget->get_field_id('type-'. $post_key .'-archive'); ?>"><?php echo stripslashes($custom_post->labels->name) ?> <?php _e('Archive', 'display-widgets') ?></label></p>
+		<p><input class="checkbox" type="checkbox" <?php checked($instance['type-'. $post_key.'-archive'], true); ?> id="<?php echo esc_attr( $widget->get_field_id('type-'. $post_key .'-archive') ); ?>" name="<?php echo esc_attr( $widget->get_field_name('type-'. $post_key .'-archive') ); ?>" />
+		<label for="<?php echo esc_attr( $widget->get_field_id('type-'. $post_key .'-archive') ); ?>"><?php echo stripslashes($custom_post->labels->name) ?> <?php _e('Archive', 'display-widgets') ?></label></p>
     <?php } ?>
     </div>
     <?php } ?>
@@ -379,12 +379,12 @@ class DWPlugin{
     <h4 class="dw_toggle" style="cursor:pointer;"><?php _e('Categories') ?> +/-</h4>
     <div class="dw_collapse">
         <?php $instance['cat-all'] = isset($instance['cat-all']) ? $instance['cat-all'] : false; ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-all'], true); ?> id="<?php echo $widget->get_field_id('cat-all'); ?>" name="<?php echo $widget->get_field_name('cat-all'); ?>" />
+		<p><input class="checkbox" type="checkbox" <?php checked( $instance['cat-all'], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('cat-all') ); ?>" name="<?php echo esc_attr( $widget->get_field_name('cat-all') ); ?>" />
         <label for="<?php echo $widget->get_field_id('cat-all'); ?>"><?php _e( 'All Categories', 'display-widgets'); ?></label></p>
     <?php foreach ( $this->cats as $cat ) {
         $instance['cat-'. $cat->cat_ID] = isset($instance['cat-'. $cat->cat_ID]) ? $instance['cat-'. $cat->cat_ID] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['cat-'. $cat->cat_ID], true); ?> id="<?php echo $widget->get_field_id('cat-'. $cat->cat_ID); ?>" name="<?php echo $widget->get_field_name('cat-'. $cat->cat_ID); ?>" />
+		<p><input class="checkbox" type="checkbox" <?php checked( $instance['cat-'. $cat->cat_ID], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('cat-'. $cat->cat_ID) ); ?>" name="<?php echo esc_attr( $widget->get_field_name('cat-'. $cat->cat_ID) ); ?>" />
         <label for="<?php echo $widget->get_field_id('cat-'. $cat->cat_ID); ?>"><?php echo $cat->cat_name ?></label></p>
     <?php
         unset($cat);
@@ -398,8 +398,8 @@ class DWPlugin{
     <?php foreach ( $this->taxes as $tax => $taxname) { 
         $instance['tax-'. $tax] = isset($instance['tax-'. $tax]) ? $instance['tax-'. $tax] : false;   
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['tax-'. $tax], true); ?> id="<?php echo $widget->get_field_id('tax-'. $tax); ?>" name="<?php echo $widget->get_field_name('tax-'. $tax); ?>" />
-        <label for="<?php echo $widget->get_field_id('tax-'. $tax); ?>"><?php echo str_replace(array('_','-'), ' ', ucfirst($taxname)) ?></label></p>
+		<p><input class="checkbox" type="checkbox" <?php checked( $instance['tax-'. $tax], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('tax-'. $tax) ); ?>" name="<?php echo esc_attr( $widget->get_field_name('tax-'. $tax) ); ?>" />
+		<label for="<?php echo esc_attr( $widget->get_field_id('tax-'. $tax) ); ?>"><?php echo str_replace( array( '_','-' ), ' ', ucfirst( $taxname ) ) ?></label></p>
     <?php
         unset($tax);
         } 
@@ -414,8 +414,8 @@ class DWPlugin{
 		$key = $lang['language_code'];
      	$instance['lang-'. $key] = isset($instance['lang-'. $key]) ? $instance['lang-'. $key] : false;
     ?>
-        <p><input class="checkbox" type="checkbox" <?php checked($instance['lang-'. $key], true); ?> id="<?php echo $widget->get_field_id('lang-'. $key); ?>" name="<?php echo $widget->get_field_name('lang-'. $key); ?>" />
-        <label for="<?php echo $widget->get_field_id('lang-'. $key); ?>"><?php echo $lang['native_name'] ?></label></p>
+        <p><input class="checkbox" type="checkbox" <?php checked( $instance['lang-'. $key], true ); ?> id="<?php echo esc_attr( $widget->get_field_id('lang-'. $key) ); ?>" name="<?php echo esc_attr( $widget->get_field_name('lang-'. $key) ); ?>" />
+        <label for="<?php echo esc_attr( $widget->get_field_id('lang-'. $key) ); ?>"><?php echo $lang['native_name'] ?></label></p>
        
     <?php 
         unset($lang);
@@ -425,8 +425,8 @@ class DWPlugin{
     </div>
     <?php } ?>
     
-    <p><label for="<?php echo $widget->get_field_id('other_ids'); ?>"><?php _e('Comma Separated list of IDs of posts not listed above', 'display-widgets') ?>:</label>
-    <input type="text" value="<?php echo $instance['other_ids'] ?>" name="<?php echo $widget->get_field_name('other_ids'); ?>" id="<?php echo $widget->get_field_id('other_ids'); ?>" />
+	<p><label for="<?php echo esc_attr( $widget->get_field_id('other_ids') ); ?>"><?php _e('Comma Separated list of IDs of posts not listed above', 'display-widgets') ?>:</label>
+	<input type="text" value="<?php echo esc_attr( $instance['other_ids'] ) ?>" name="<?php echo esc_attr( $widget->get_field_name('other_ids') ); ?>" id="<?php echo esc_attr( $widget->get_field_id('other_ids') ); ?>" />
     </p>
     </div>
 <?php
@@ -558,7 +558,7 @@ function dw_show_opts(e){
 	inside.find('.spinner').show();
     
     jQuery.ajax({
-		type:'POST',url:'<?php echo admin_url( "admin-ajax.php" ) ?>',
+		type:'POST',url:ajaxurl,
 		data:{
 		    'action':'dw_show_widget',
 		    'opts':JSON.stringify(opts.children('input').serializeArray()),
@@ -725,15 +725,10 @@ class DW_Walker_Page_List extends Walker_Page {
     if ( '' === $page->post_title )
       $page->post_title = sprintf( __( '#%d (no title)' ), $page->ID );
 
-    $output .= '<li>' . $indent . '<input class="checkbox" type="checkbox" ' 
-        . checked($instance['page-'. $page->ID], true, false) 
-        . ' id="' . $widget->get_field_id('page-'. $page->ID) 
-        .'" name="' . $widget->get_field_name('page-'. $page->ID) .'" />';
-    
+    $output .= '<li>' . $indent;
+	$output .= '<input class="checkbox" type="checkbox" ' . checked( $instance[ 'page-' . $page->ID ], true, false ) . ' id="' . esc_attr( $widget->get_field_id('page-'. $page->ID) ) . '" name="' . esc_attr( $widget->get_field_name('page-'. $page->ID) ) .'" />';
 
-    $output .= '<label for="' . $widget->get_field_id('page-'. $page->ID) . '">' 
-        . apply_filters( 'the_title', $page->post_title, $page->ID ) 
-        . '</label>';
+	$output .= '<label for="' . esc_attr( $widget->get_field_id('page-'. $page->ID) ) . '">' . apply_filters( 'the_title', $page->post_title, $page->ID ) . '</label>';
   }
 
   function end_el( &$output, $page, $depth = 0, $args = array() ) {
