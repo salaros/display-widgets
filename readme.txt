@@ -20,18 +20,21 @@ http://strategy11.com/display-widgets/
 
 = Translations =
 * Albanian ([Taulant](http://wporacle.com/ "Taulant"))
-* Bahasa Malaysian (Jass at 100webhosting.com)
+* Arabic
+* Bahasa Malaysian
 * Chinese ([Hanolex](http://hanolex.org "Hanolex"))
-* Dutch (Alanya Hotels)
-* French ([Fmarie](http://www.fmarie.net/ "Fmarie"))
-* German ([Caspar Hübinger](http://glueckpress.com "Caspar Hübinger"))
-* Hebrew ([Ariel](http://arielk.net "Ariel"))
+* Dutch
+* Finish
+* French
+* German
+* Hebrew
 * Japanese ([BNG NET](http://staff.blog.bng.net/ "BNG NET"))
-* Polish (Soplica at artvision1.pl)
-* Romanian (Nobelcom)
-* Russian ([Serhij](http://darmoid.ru "Serhij"))
+* Polish
+* Romanian
+* Russian
 * Spanish ([Alicia García Holgado](http://grial.usal.es/pfcgrial "Alicia García Holgado"))
-* Tagalog (Hanne at pointen.dk)
+* Swedish
+* Tagalog
 
 == Installation ==
 
@@ -64,6 +67,13 @@ function dw_callback_trigger(){
 = 2.04 =
 * Check if user is logged in before any other checks
 * Resume use of old hook for those with widgets showing that shouldn't
+* Fix XSS vulnerablity
+* Allow for taxonomies for post and pages
+* Use Taxonomy labels instead of slugs
+* Added "All Categories" checkbox option
+* New Hook: dw_pages_types_register for registering "custom page"
+* New Hook: dw_instance_visibility for allowing plugin / themes to add their own custom logic for determining the widget visibility
+* Added translations for Finnish and Swedish
 
 = 2.03 =
 * Default to check for widgets on wp_loaded hook
