@@ -130,38 +130,25 @@ class DWPlugin{
 			}
 
 			if ( ! $show ) {
-
+				$category_taxonomy = array( 'category' );
 				if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && is_product() ) {
-				    $cats = get_categories( array(
-						'hide_empty'    => false,
-						'taxonomy'		=> array('product_cat', 'category'),
-						//'fields'        => 'id=>name', //added in 3.8
-					) );
-					
-					foreach ( $cats as $cat ) {
-						if ( $show ) {
-							break;
-						}
-						$c_id = self::get_lang_id( $cat->cat_ID, 'category' );
-						if ( isset( $instance[ 'cat-' . $c_id ] ) ) {
-							$show = $instance[ 'cat-' . $c_id ];
-						}
-						unset( $c_id, $cat );
-					}
+				    $category_taxonomy[] = 'product_cat';
 				}
-				else {
-					$cats = get_the_category();
-					foreach ( $cats as $cat ) {
-						if ( $show ) {
-							break;
-						}
-						$c_id = self::get_lang_id( $cat->cat_ID, 'category' );
-						if ( isset( $instance[ 'cat-' . $c_id ] ) ) {
-							$show = $instance[ 'cat-' . $c_id ];
-						}
-						unset( $c_id, $cat );
+				$cats = get_the_category( array(
+					'taxonomy' => $category_taxonomy,
+				) );
+
+				foreach ( $cats as $cat ) {
+					if ( $show ) {
+						break;
 					}
+					$c_id = self::get_lang_id( $cat->cat_ID, 'category' );
+					if ( isset( $instance[ 'cat-' . $c_id ] ) ) {
+						$show = $instance[ 'cat-' . $c_id ];
+					}
+					unset( $c_id, $cat );
 				}
+			}
             
 		} else if ( is_404() ) {
 			$show = isset( $instance['page-404'] ) ? $instance['page-404'] : false;
@@ -658,20 +645,15 @@ function dw_toggle(){jQuery(this).next('.dw_collapse').toggle();}
 		}
         
 		if ( empty( $this->cats ) ) {
-
+			$category_taxonomy = array( 'category' );
 			if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-			    $this->cats = get_categories( array(
-					'hide_empty'    => false,
-					'taxonomy'		=> array('product_cat', 'category'),
-					//'fields'        => 'id=>name', //added in 3.8
-				) );
+			    $category_taxonomy[] = 'product_cat';
 			}
-			else {
-				$this->cats = get_categories( array(
-					'hide_empty'    => false,
-					//'fields'        => 'id=>name', //added in 3.8
-				) );
-			}
+			$this->cats = get_categories( array(
+				'hide_empty' => false,
+				'taxonomy'   => $category_taxonomy,
+				//'fields'        => 'id=>name', //added in 3.8
+			) );
 		}
         
 		if ( empty( $this->cposts ) ) {
