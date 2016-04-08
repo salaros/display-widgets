@@ -173,7 +173,7 @@ class DWPlugin{
 	
 		if ( ! $show && defined( 'ICL_LANGUAGE_CODE' ) ) {
 			// check for WPML widgets
-			$show = isset( $instance[ 'lang-' . ICL_LANGUAGE_CODE ] ) ? $instance[ 'lang-' . ICL_LANGUAGE_CODE ] : false;
+			$show = isset( $instance[ 'page-' . $post_id ] ) && isset( $instance[ 'lang-' . ICL_LANGUAGE_CODE ] ) ? $instance[ 'lang-' . ICL_LANGUAGE_CODE ] : false;
 		}
 
 		if ( ! isset( $show ) ) {
