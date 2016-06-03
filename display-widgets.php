@@ -113,10 +113,8 @@ class DWPlugin{
 			$show = isset( $instance[ 'tax-' . $term->taxonomy ] ) ? $instance[ 'tax-'. $term->taxonomy] : false;
 			unset( $term );
 		} else if ( is_post_type_archive() ) {
-			global $wp_query;
-			$type = get_post_type();
-			$type = ($type === false) ? $wp_query->query['post_type'] : $type;
-			$show = isset( $instance[ 'type-' . $type . '-archive' ] ) ? $instance[ 'type-' . $type . '-archive' ] : false;
+			$type = get_queried_object();
+			$show = isset( $instance[ 'type-' . $type->name . '-archive' ] ) ? $instance[ 'type-' . $type->name . '-archive' ] : false;
 		} else if ( is_archive() ) {
 			$show = isset( $instance['page-archive'] ) ? $instance['page-archive'] : false;
 		} else if ( is_single() ) {
