@@ -182,9 +182,6 @@ class DWPlugin{
         
 		if ( ( $instance['dw_include'] && false == $show ) || ( 0 == $instance['dw_include'] && $show ) ) {
 			return false;
-		} else if ( defined('ICL_LANGUAGE_CODE') && $instance['dw_include'] && $show && ! isset( $instance[ 'lang-' . ICL_LANGUAGE_CODE ] ) ) {
-			//if the widget has to be visible here, but the current language has not been checked, return false
-			return false;
 		}
         
 		return $instance;
