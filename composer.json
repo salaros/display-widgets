@@ -1,0 +1,17 @@
+{
+    "name"          : "salaros/display-widgets",
+    "description"   : "Simply hide widgets on specified pages. Adds checkboxes to each widget to either show or hide it on every site page.",
+    "type"          : "wordpress-plugin",
+    "license"       : "MIT",
+    "authors": [
+        {
+            "name"  : "Stephanie Wells",
+            "email" : "steph@strategy11.com"
+        },
+        {
+            "name"  : "Zhmayev Yaroslav",
+            "email" : "salaros@yandex.ru"
+        }
+    ],
+    "require": {}
+}
