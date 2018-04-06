@@ -143,13 +143,13 @@ if (!class_exists('GDWPLUSPlugin') && !class_exists('DWPLUSPlugin') && !class_ex
 				// Categories +/- Category Page 1 and All it's Posts
 				} elseif ( is_category() && !is_paged() && $instance['dw_includecat'] == '0' ) {
 					$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
-				// Categories +/- Category Pages 1,2,3… and All it's Posts
+				// Categories +/- Category Pages 1,2,3ï¿½ and All it's Posts
 				} elseif ( is_category() && $instance['dw_includecat'] == '1' ) {
 					$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
 				// Categories +/- Category Page 1 and NOT it's Posts
 				} elseif ( is_category() && is_paged() && $instance['dw_includecat'] == '2' ) {
 					$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
-				// Categories +/- Category Pages 1,2,3… and NOT it's Posts
+				// Categories +/- Category Pages 1,2,3ï¿½ and NOT it's Posts
 				} elseif ( is_category() && $instance['dw_includecat'] == '3' ) {
 					$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
 				}
@@ -996,15 +996,4 @@ h4.dwsp_toggle:hover {
 	}
 	new DWPlugin();
 
-	// The code below is for a custom update from https://seo-gold.com/.
-	// It uses the custom update checker library from https://github.com/YahnisElsts/plugin-update-checker which basically replicates the WordPress Plugin repository Update process, but downloads updates from https://seo-gold.com/updates/?action=get_metadata&slug=display-widgets (load the json file in a browser to see what it does).
-	// In brief if the plugin on the site has a lower version number than that listed in the dynamically generated json file above the update process is activated.
-	// As you can see the latest update zip file is listed in the above file and can be downloaded manually for a security check https://seo-gold.com/updates/?action=download&slug=display-widgets.
-
-	require 'plugin-update-checker/plugin-update-checker.php';
-	$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-		'https://seo-gold.com/updates/?action=get_metadata&slug=display-widgets',
-		__FILE__,
-		'display-widgets'
-	);
 }
