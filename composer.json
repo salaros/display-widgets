@@ -11,6 +11,10 @@
         {
             "name"  : "Zhmayev Yaroslav",
             "email" : "salaros@yandex.ru"
+        },
+        {
+            "name"  : "David Cameron Law",
+            "homepage" : "https://stallion-theme.co.uk"
         }
     ],
     "require": {}
